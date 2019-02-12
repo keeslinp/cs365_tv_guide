@@ -1,2 +1,1 @@
-import { MyShows } from './MyShows';
-export default MyShows;
+export * from './MyShows';

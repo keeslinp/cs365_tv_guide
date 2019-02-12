@@ -5,9 +5,9 @@ import {
 } from 'react-router-dom';
 import styled from 'styled-components';
 import { AppBar } from './components';
-import { MyShows, PopularShows, SearchResults } from './pages';
+import { MyShows, PopularShows, SearchResults, Show } from './pages';
 import './App.css';
-import { internalData, externalData, fetchEpisodes, fetchShows, markEpisodeAsSeen, saveShow, searchShows } from './reducers';
+import { internalData, externalData, fetchEpisodes, fetchPopularShows, markEpisodeAsSeen, saveShow, searchShows, fetchMyShows } from './reducers';
 
 
 const Container = styled.div`
@@ -15,49 +15,63 @@ const Container = styled.div`
 `;
 
 const App = () => {
-  const [{ shows, episodes, searchResults, }, fetchData] = useReducer(externalData, {});
+  const [{ myShows, episodes, searchResults, popularShows }, fetchData] = useReducer(externalData, {});
   const [{ savedShows, seenEpisodes }, updateState] = useReducer(internalData, {
     savedShows: [],
     seenEpisodes: [],
   });
   useEffect(() => {
-    fetchData(fetchEpisodes());
-    fetchData(fetchShows());
+    fetchPopularShows().then(fetchData);
     updateState(markEpisodeAsSeen({
-      showId: 'stranger_things',
+      showId: 1402,
       episodeNumber: 1,
     }));
-    updateState(saveShow('stranger_things'));
+    updateState(saveShow(1402));
   }, []);
+  useEffect(() => {
+    fetchMyShows(savedShows).then(fetchData);
+  }, [savedShows]);
   const search = (value) => {
-    fetchData(searchShows(value));
+    searchShows(value).then(fetchData);
+  };
+  const handleSaveShow = (id) => {
+    updateState(saveShow(id));
   };
   return (
     <Router>
       <div>
         <AppBar search={search} />
         <Container>
-          <Route exact path="/" render={() =>
+          <Route exact path="/" render={({ history }) =>
             <MyShows
-              shows={shows}
-              episodes={episodes}
+              shows={myShows}
               savedShows={savedShows}
               seenEpisodes={seenEpisodes}
+              history={history}
             />} />
-          <Route exact path="/popular" render={() =>
+          <Route exact path="/popular" render={({ history }) =>
             <PopularShows
-              shows={shows}
+              shows={popularShows}
               episodes={episodes}
               savedShows={savedShows}
               seenEpisodes={seenEpisodes}
+              history={history}
             />} />
-          <Route exact path="/search" render={() =>
+          <Route exact path="/search" render={({ history }) =>
             <SearchResults
-              shows={shows}
               episodes={episodes}
               savedShows={savedShows}
               seenEpisodes={seenEpisodes}
               searchResults={searchResults}
+              history={history}
+            />} />
+          <Route exact path="/show/:showId" render={({ match: { params: { showId } } }) =>
+            <Show
+              episodes={episodes}
+              savedShows={savedShows}
+              seenEpisodes={seenEpisodes}
+              showId={parseInt(showId, 10)}
+              saveShow={handleSaveShow}
             />} />
         </Container>
       </div>

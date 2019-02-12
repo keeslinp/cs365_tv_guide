@@ -14,6 +14,7 @@ export const saveShow = showId => ({
 })
 
 export const internalData = (state, action) => {
+  console.log('internal action', action);
   switch (action.type) {
     case ACTIONS.SEEN_EPISODE: {
       const { seenEpisodes = [], ...rest } = state;

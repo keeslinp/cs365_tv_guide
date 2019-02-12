@@ -26,13 +26,16 @@ const styles = {
 const SearchBar = ({ classes, history, search }) => {
   const [ searchValue, setSearch ] = useState('');
   const isSearching = get(history, 'location.pathname', '') === '/search';
-  const handleSearchChange = ({ target: { value } }) => {
+  const triggerSearch = (value) => {
     const newUrl = `/search`;
     if (!isSearching) {
       history.push(newUrl);
     }
     search(value);
     setSearch(value);
+  };
+  const handleSearchChange = ({ target: { value } }) => {
+    triggerSearch(value);
   };
   const clearSearch = () => {
     setSearch('');
@@ -48,7 +51,7 @@ const SearchBar = ({ classes, history, search }) => {
       <IconButton className={classes.iconButton} aria-label="Search">
         {isSearching ?
           <ClearIcon onClick={clearSearch} />
-          : <SearchIcon />
+            : <SearchIcon onClick={() => triggerSearch(searchValue)}/>
         }
       </IconButton>
     </Paper>

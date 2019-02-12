@@ -3,13 +3,19 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { ShowGrid } from '../../components';
 
-export const SearchResults = ({ shows, episodes, seenEpisodes, savedShows, searchResults }) => {
+export const SearchResults = ({ episodes, seenEpisodes, savedShows, searchResults, history }) => {
   return (
     <div>
       <Typography variant="h3">
         My Shows
     </Typography>
-      {shows && episodes && searchResults ? <ShowGrid shows={shows.filter(({ id }) => searchResults.includes(id))} episodes={episodes} seenEpisodes={seenEpisodes} savedShows={savedShows} />
+    {searchResults ?
+        <ShowGrid
+          shows={searchResults}
+          seenEpisodes={seenEpisodes}
+          savedShows={savedShows}
+          history={history}
+        />
         : <CircularProgress />}
     </div>
   );

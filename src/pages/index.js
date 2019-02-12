@@ -1,4 +1,4 @@
-import MyShows from './myShows';
-import PopularShows from './popularShows';
-import SearchResults from './searchResults';
-export { MyShows, PopularShows, SearchResults };
+export * from './myShows';
+export * from './popularShows';
+export * from './searchResults';
+export * from './show';

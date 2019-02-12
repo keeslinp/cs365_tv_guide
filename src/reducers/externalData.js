@@ -1,57 +1,58 @@
-const shows = [
-  {
-    name: 'Stranger Things',
-    description: 'When a young boy disappears, his mother, a police chief, and his friends must confront terrifying forces in order to get him back.',
-    image: 'https://www.thetvdb.com/banners/fanart/original/5c54f71c7acf6.jpg',
-    id: 'stranger_things',
-  },
-  {
-    name: 'Lost',
-    description: 'After their plane, Oceanic Air flight 815, tore apart whilst thousands of miles off course, the survivors find themselves on a mysterious deserted island where they soon find out they are not alone.',
-    image: 'https://www.thetvdb.com/banners/fanart/original/73739-34.jpg',
-    id: 'lost',
-  },
-];
-const episodes = {
-  'stranger_things': [
-    { absoluteNumber: 1, airedSeason: 1 },
-    { absoluteNumber: 2, airedSeason: 1 },
-  ],
-  'lost': [
-    { absoluteNumber: 1, airedSeason: 1 },
-    { absoluteNumber: 2, airedSeason: 1 },
-    { absoluteNumber: 3, airedSeason: 1 },
-    { absoluteNumber: 4, airedSeason: 1 },
-  ],
-};
+const API_KEY = 'ac50cb8b6b6b70ecb3696aeca60ab200';
 
 const ACTIONS = Object.freeze({
-  FETCH_SHOWS: 'FETCH_SHOWS',
+  FETCH_POPULAR_SHOWS: 'FETCH_POPULAR_SHOWS',
+  FETCH_MY_SHOWS: 'FETCH_MY_SHOWS',
   FETCH_EPISODES: 'FETCH_EPISODES',
   SEARCH_SHOWS: 'SEARCH_SHOWS',
+  FETCH_SHOW: 'FETCH_SHOW',
 });
 
 export const fetchEpisodes = () => ({
   type: ACTIONS.FETCH_EPISODES,
 });
 
-export const fetchShows = () => ({
-  type: ACTIONS.FETCH_SHOWS,
-});
+export const fetchPopularShows = async () => {
+  const { results } = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`).then(res => res.json());
+  return {
+    type: ACTIONS.FETCH_POPULAR_SHOWS,
+    results,
+  };
+}
 
-export const searchShows = query => ({
-  type: ACTIONS.SEARCH_SHOWS,
-  query,
-});
+export const searchShows = async query => {
+  const { results } = await fetch(`https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&language=en-US&query=${query}&page=1`).then(resp => resp.json());
+  return {
+    type: ACTIONS.SEARCH_SHOWS,
+    searchResults: results,
+  };
+};
+
+export const fetchMyShows = async (savedShows) => {
+  const myShows = await Promise.all(savedShows.map(id => fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`).then(resp => resp.json())));
+  return {
+    type: ACTIONS.FETCH_MY_SHOWS,
+    myShows,
+  };
+};
+
+export const fetchShow = async showId => {
+  const show = await fetch(`https://api.themoviedb.org/3/tv/${showId}?api_key=${API_KEY}&language=en-US`).then(resp => resp.json());
+  return {
+    type: ACTIONS.FETCH_SHOW,
+    show,
+  };
+}
 
 export const externalData = (state, action) => {
+  console.log('ACTION', action);
   switch (action.type) {
-    case ACTIONS.FETCH_EPISODES: return { ...state, episodes };
-    case ACTIONS.FETCH_SHOWS: return { ...state, shows };
+    case ACTIONS.FETCH_POPULAR_SHOWS: return { ...state, popularShows: action.results, };
+    case ACTIONS.FETCH_MY_SHOWS: return { ...state, myShows: action.myShows, };
+    case ACTIONS.FETCH_SHOW: return { ...state, show: action.show };
     case ACTIONS.SEARCH_SHOWS: return {
       ...state,
-      searchResults: shows.filter(({ name }) => name.toLowerCase().includes(action.query.toLowerCase()))
-        .reduce((ary, { id }) => [...ary, id], []),
+      searchResults: action.searchResults,
     };
     default: return state;
   }

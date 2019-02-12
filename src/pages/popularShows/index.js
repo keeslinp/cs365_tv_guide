@@ -1,2 +1,1 @@
-import { PopularShows } from './PopularShows';
-export default PopularShows;
+export * from './PopularShows';
