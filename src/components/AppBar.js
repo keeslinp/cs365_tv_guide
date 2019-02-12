@@ -19,7 +19,7 @@ const StyledToolbar = withStyles({
   },
 })(Toolbar);
 
-const AppBar = () => (
+const AppBar = ({ search }) => (
   <div>
     <MuiAppBar position="static" color="default">
       <StyledToolbar>
@@ -27,7 +27,7 @@ const AppBar = () => (
         <StyledLinkButton to={`/`}>My Shows</StyledLinkButton>
         <StyledLinkButton to={`/popular`}>Popular</StyledLinkButton>
       </div>
-        <SearchBar />
+        <SearchBar search={search}/>
       </StyledToolbar>
     </MuiAppBar>
   </div>

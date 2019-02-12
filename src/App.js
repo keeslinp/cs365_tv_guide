@@ -1,55 +1,64 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
 import styled from 'styled-components';
 import { AppBar } from './components';
-import { MyShows } from './pages';
+import { MyShows, PopularShows, SearchResults } from './pages';
 import './App.css';
-import { reducer } from './reducers';
+import { internalData, externalData, fetchEpisodes, fetchShows, markEpisodeAsSeen, saveShow, searchShows } from './reducers';
 
-const initalState = {
-  shows: [
-    {
-      name: 'Stranger Things',
-      description: 'When a young boy disappears, his mother, a police chief, and his friends must confront terrifying forces in order to get him back.',
-      image: 'https://www.thetvdb.com/banners/fanart/original/5c54f71c7acf6.jpg',
-      id: 'stranger_things',
-    },
-    {
-      name: 'Lost',
-      description: 'After their plane, Oceanic Air flight 815, tore apart whilst thousands of miles off course, the survivors find themselves on a mysterious deserted island where they soon find out they are not alone.',
-      image: 'https://www.thetvdb.com/banners/fanart/original/73739-34.jpg',
-      id: 'lost',
-    },
-  ],
-  episodes: {
-    'stranger_things': [
-      { absoluteNumber: 1, airedSeason: 1, seen: true },
-      { absoluteNumber: 1, airedSeason: 1, seen: false },
-    ],
-    'lost': [
-      { absoluteNumber: 1, airedSeason: 1, seen: true },
-      { absoluteNumber: 2, airedSeason: 1, seen: false },
-      { absoluteNumber: 3, airedSeason: 1, seen: false },
-      { absoluteNumber: 4, airedSeason: 1, seen: false },
-    ],
-  }
-};
 
 const Container = styled.div`
   margin: 20px;
 `;
 
 const App = () => {
-  const [{ shows, episodes, }, dispatch] = useReducer(reducer, initalState);
+  const [{ shows, episodes, searchResults, }, fetchData] = useReducer(externalData, {});
+  const [{ savedShows, seenEpisodes }, updateState] = useReducer(internalData, {
+    savedShows: [],
+    seenEpisodes: [],
+  });
+  useEffect(() => {
+    fetchData(fetchEpisodes());
+    fetchData(fetchShows());
+    updateState(markEpisodeAsSeen({
+      showId: 'stranger_things',
+      episodeNumber: 1,
+    }));
+    updateState(saveShow('stranger_things'));
+  }, []);
+  const search = (value) => {
+    fetchData(searchShows(value));
+  };
   return (
     <Router>
       <div>
-        <AppBar />
+        <AppBar search={search} />
         <Container>
-          <Route exact path="/" render={() => <MyShows shows={shows} episodes={episodes} />} />
+          <Route exact path="/" render={() =>
+            <MyShows
+              shows={shows}
+              episodes={episodes}
+              savedShows={savedShows}
+              seenEpisodes={seenEpisodes}
+            />} />
+          <Route exact path="/popular" render={() =>
+            <PopularShows
+              shows={shows}
+              episodes={episodes}
+              savedShows={savedShows}
+              seenEpisodes={seenEpisodes}
+            />} />
+          <Route exact path="/search" render={() =>
+            <SearchResults
+              shows={shows}
+              episodes={episodes}
+              savedShows={savedShows}
+              seenEpisodes={seenEpisodes}
+              searchResults={searchResults}
+            />} />
         </Container>
       </div>
     </Router>

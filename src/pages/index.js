@@ -1,2 +1,4 @@
 import MyShows from './myShows';
-export { MyShows };
+import PopularShows from './popularShows';
+import SearchResults from './searchResults';
+export { MyShows, PopularShows, SearchResults };

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@material-ui/icons/Clear';
 import { get } from 'lodash';
 import { withRouter } from 'react-router'
 
@@ -22,22 +23,33 @@ const styles = {
   },
 };
 
-const SearchBar = ({ classes, history }) => {
+const SearchBar = ({ classes, history, search }) => {
+  const [ searchValue, setSearch ] = useState('');
+  const isSearching = get(history, 'location.pathname', '') === '/search';
   const handleSearchChange = ({ target: { value } }) => {
     const newUrl = `/search`;
-    const state = { value };
-    if (value.length === 1) {
-      history.push(newUrl, state);
+    if (!isSearching) {
+      history.push(newUrl);
+    }
+    search(value);
+    setSearch(value);
+  };
+  const clearSearch = () => {
+    setSearch('');
+    if (history.length > 1) {
+      history.goBack();
     } else {
-      history.replace(newUrl, state);
+      history.push('/');
     }
   };
-  const searchValue = get(history, 'location.state.value', '');
   return (
     <Paper className={classes.root} elevation={1}>
       <InputBase className={classes.input} placeholder="Search Shows" onChange={handleSearchChange} value={searchValue}/>
       <IconButton className={classes.iconButton} aria-label="Search">
-        <SearchIcon />
+        {isSearching ?
+          <ClearIcon onClick={clearSearch} />
+          : <SearchIcon />
+        }
       </IconButton>
     </Paper>
   );

@@ -15,6 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "rsync -r build keeslinp.duckdns.org:/home/pearce/cs365_tv_guide",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

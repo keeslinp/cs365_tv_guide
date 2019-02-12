@@ -1,1 +1,2 @@
-export * from './reducer';
+export * from './internalData';
+export * from './externalData';
