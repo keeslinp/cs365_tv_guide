@@ -25,7 +25,7 @@ export const ShowGrid = ({ shows, savedShows, seenEpisodes, history }) => (
               title={name}
             />
             <CardContent>
-              <Typography variant="h5" inline>
+              <Typography variant="h5">
                 {name}
               </Typography>
               {savedShows.includes(id) && number_of_episodes &&

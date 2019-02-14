@@ -3,14 +3,18 @@ const API_KEY = 'ac50cb8b6b6b70ecb3696aeca60ab200';
 const ACTIONS = Object.freeze({
   FETCH_POPULAR_SHOWS: 'FETCH_POPULAR_SHOWS',
   FETCH_MY_SHOWS: 'FETCH_MY_SHOWS',
-  FETCH_EPISODES: 'FETCH_EPISODES',
+  FETCH_SEASON: 'FETCH_EPISODES',
   SEARCH_SHOWS: 'SEARCH_SHOWS',
   FETCH_SHOW: 'FETCH_SHOW',
 });
 
-export const fetchEpisodes = () => ({
-  type: ACTIONS.FETCH_EPISODES,
-});
+export const fetchSeason = async (showId, seasonNumber) => {
+  const season = await fetch(`https://api.themoviedb.org/3/tv/${showId}/season/${seasonNumber}?api_key=${API_KEY}&language=en-US`).then(resp => resp.json());
+  return {
+    type: ACTIONS.FETCH_SEASON,
+    season,
+  };
+};
 
 export const fetchPopularShows = async () => {
   const { results } = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`).then(res => res.json());
@@ -53,6 +57,10 @@ export const externalData = (state, action) => {
     case ACTIONS.SEARCH_SHOWS: return {
       ...state,
       searchResults: action.searchResults,
+    };
+    case ACTIONS.FETCH_SEASON: return {
+      ...state,
+      season: action.season,
     };
     default: return state;
   }

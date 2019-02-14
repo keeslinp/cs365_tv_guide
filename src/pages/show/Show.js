@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { get } from 'lodash';
 import { externalData, fetchShow } from '../../reducers';
+import { Episodes } from './Episodes';
 
 const ShowBody = styled.div`
   margin-top: 20px;
@@ -50,7 +51,7 @@ export const Show = ({ showId, savedShows, seenEpisodes, saveShow }) => {
             Next Episode: {get(show, 'next_episode_to_air.air_date', 'N/A')}
           </Typography>
           {savedShows.includes(showId) ?
-              <Typography color="textSecondary"><DoneIcon /> Show Save</Typography>
+              <Typography color="textSecondary"><DoneIcon /> Show Saved</Typography>
               :
             <Button variant="contained" color="primary" onClick={handleSaveShowButtonClicked}>
               Add To My Shows
@@ -59,8 +60,7 @@ export const Show = ({ showId, savedShows, seenEpisodes, saveShow }) => {
         </Information>
       </ShowBody>
       <div>
-        <Typography variant="h4">Episodes</Typography>
-        <Typography color="textSecondary">Under construction...</Typography>
+        <Episodes seasons={show.seasons} seenEpisodes={seenEpisodes} showId={showId} />
       </div>
     </div>
   );

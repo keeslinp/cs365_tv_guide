@@ -28,13 +28,16 @@ export const internalData = (state, action) => {
     }
     case ACTIONS.ADD_SHOW: {
       const { savedShows = [], ...rest } = state;
-      return {
-        ...rest,
-        savedShows: [
-          ...savedShows,
-          action.showId,
-        ]
-      };
+      if (!savedShows.includes(action.showId)) {
+        return {
+          ...rest,
+          savedShows: [
+            ...savedShows,
+            action.showId,
+          ]
+        };
+      }
+      return state;
     }
     default:
       return state;

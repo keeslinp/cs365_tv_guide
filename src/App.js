@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { AppBar } from './components';
 import { MyShows, PopularShows, SearchResults, Show } from './pages';
 import './App.css';
-import { internalData, externalData, fetchEpisodes, fetchPopularShows, markEpisodeAsSeen, saveShow, searchShows, fetchMyShows } from './reducers';
+import { internalData, externalData, fetchPopularShows, markEpisodeAsSeen, saveShow, searchShows, fetchMyShows } from './reducers';
 
 
 const Container = styled.div`
