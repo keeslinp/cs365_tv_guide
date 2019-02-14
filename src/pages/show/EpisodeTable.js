@@ -15,7 +15,6 @@ export const EpisodeTable = ({ episodes, seenEpisodes, markEpisodeAsSeen }) => {
           <TableCell>Name</TableCell>
           <TableCell>Description</TableCell>
           <TableCell>Seen</TableCell>
-          <TableCell>Mark Seen Up To</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -27,7 +26,6 @@ export const EpisodeTable = ({ episodes, seenEpisodes, markEpisodeAsSeen }) => {
               <TableCell>{name}</TableCell>
               <TableCell>{overview}</TableCell>
               <TableCell padding="checkbox"><Checkbox checked={hasSeen} onChange={markEpisodeAsSeen.bind(null, id)} /></TableCell>
-              <TableCell padding="checkbox"><Checkbox /></TableCell>
             </TableRow>
           );
         })}
