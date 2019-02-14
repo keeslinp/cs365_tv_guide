@@ -24,7 +24,7 @@ const Information = styled.div`
   max-width: 50%;
 `;
 
-export const Show = ({ showId, savedShows, seenEpisodes, saveShow }) => {
+export const Show = ({ showId, savedShows, seenEpisodes, saveShow, markEpisodeAsSeen }) => {
   const [{ show }, fetchData] = useReducer(externalData, {});
   useEffect(() => {
     fetchShow(showId).then(fetchData);
@@ -60,7 +60,7 @@ export const Show = ({ showId, savedShows, seenEpisodes, saveShow }) => {
         </Information>
       </ShowBody>
       <div>
-        <Episodes seasons={show.seasons} seenEpisodes={seenEpisodes} showId={showId} />
+        <Episodes seasons={show.seasons} seenEpisodes={seenEpisodes} showId={showId} markEpisodeAsSeen={markEpisodeAsSeen.bind(null, showId)} />
       </div>
     </div>
   );

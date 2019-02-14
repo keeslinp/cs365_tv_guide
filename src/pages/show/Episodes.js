@@ -2,11 +2,11 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Season } from './Season';
 
-export const Episodes = ({ seasons, showId, seenEpisodes }) => {
+export const Episodes = ({ seasons, showId, seenEpisodes, markEpisodeAsSeen }) => {
   return (
     <div>
       <Typography variant="h4">Episodes</Typography>
-      {seasons.map(season => <Season season={season} showId={showId} seenEpisodes={seenEpisodes} key={season.id} />)}
+      {seasons.map(season => <Season season={season} showId={showId} seenEpisodes={seenEpisodes} key={season.id} markEpisodeAsSeen={markEpisodeAsSeen} />)}
     </div>
   );
 };

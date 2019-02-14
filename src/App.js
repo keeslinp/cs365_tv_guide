@@ -37,6 +37,9 @@ const App = () => {
   const handleSaveShow = (id) => {
     updateState(saveShow(id));
   };
+  const handleMarkAsSeen = (showId, id, _evt, value) => {
+    updateState(markEpisodeAsSeen(showId, id, value));
+  };
   return (
     <Router>
       <div>
@@ -72,6 +75,7 @@ const App = () => {
               seenEpisodes={seenEpisodes}
               showId={parseInt(showId, 10)}
               saveShow={handleSaveShow}
+              markEpisodeAsSeen={handleMarkAsSeen}
             />} />
         </Container>
       </div>

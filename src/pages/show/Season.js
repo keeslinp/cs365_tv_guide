@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { EpisodeTable } from './EpisodeTable';
 import { externalData, fetchSeason } from '../../reducers';
 
-export const Season = ({ season: { id, name, season_number }, showId }) => {
+export const Season = ({ season: { id, name, season_number }, showId, seenEpisodes, markEpisodeAsSeen }) => {
   const [{ season }, fetchData] = useReducer(externalData, {});
   useEffect(() => {
     fetchSeason(showId, season_number).then(fetchData);
@@ -19,7 +19,7 @@ export const Season = ({ season: { id, name, season_number }, showId }) => {
         <Typography>{name}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        {Boolean(season) ? <EpisodeTable episodes={season.episodes} /> : <CircularProgress />}
+        {Boolean(season) ? <EpisodeTable episodes={season.episodes} seenEpisodes={seenEpisodes} markEpisodeAsSeen={markEpisodeAsSeen} /> : <CircularProgress />}
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );

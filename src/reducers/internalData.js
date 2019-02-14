@@ -3,9 +3,11 @@ const ACTIONS = Object.freeze({
   SEEN_EPISODE: 'SEEN_EPISODE',
 });
 
-export const markEpisodeAsSeen = payload => ({
+export const markEpisodeAsSeen = (showId, id, seen) => ({
   type: ACTIONS.SEEN_EPISODE,
-  payload,
+  id,
+  showId,
+  seen,
 });
 
 export const saveShow = showId => ({
@@ -18,13 +20,20 @@ export const internalData = (state, action) => {
   switch (action.type) {
     case ACTIONS.SEEN_EPISODE: {
       const { seenEpisodes = [], ...rest } = state;
-      return {
-        ...rest,
-        seenEpisodes: [
-          ...seenEpisodes,
-          { ...action.payload },
-        ],
-      };
+      if (action.seen) {
+        return {
+          ...rest,
+          seenEpisodes: [
+            ...seenEpisodes,
+            { episodeId: action.id, showId: action.showId },
+          ],
+        };
+      } else {
+        return {
+          ...rest,
+          seenEpisodes: seenEpisodes.filter(({ episodeId }) => episodeId !== action.id),
+        };
+      }
     }
     case ACTIONS.ADD_SHOW: {
       const { savedShows = [], ...rest } = state;

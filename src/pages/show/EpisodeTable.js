@@ -6,7 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
-export const EpisodeTable = ({ episodes }) => {
+export const EpisodeTable = ({ episodes, seenEpisodes, markEpisodeAsSeen }) => {
   return (
     <Table>
       <TableHead>
@@ -19,15 +19,18 @@ export const EpisodeTable = ({ episodes }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {episodes.map(({ episode_number, name, overview, id }) => (
-          <TableRow key={id}>
-            <TableCell align="right">{episode_number}</TableCell>
-            <TableCell>{name}</TableCell>
-            <TableCell>{overview}</TableCell>
-            <TableCell padding="checkbox"><Checkbox /></TableCell>
-            <TableCell padding="checkbox"><Checkbox /></TableCell>
-          </TableRow>
-        ))}
+        {episodes.map(({ episode_number, name, overview, id }) => {
+          const hasSeen = seenEpisodes.some(({ episodeId }) => episodeId === id);
+          return (
+            <TableRow key={id}>
+              <TableCell align="right">{episode_number}</TableCell>
+              <TableCell>{name}</TableCell>
+              <TableCell>{overview}</TableCell>
+              <TableCell padding="checkbox"><Checkbox checked={hasSeen} onChange={markEpisodeAsSeen.bind(null, id)} /></TableCell>
+              <TableCell padding="checkbox"><Checkbox /></TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );
