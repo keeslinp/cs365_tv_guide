@@ -12,7 +12,7 @@ const styles = {
   root: {
     padding: '2px 4px',
     display: 'flex',
-    alignItems: 'baseline',
+    alignItems: 'center',
   },
   input: {
     marginLeft: 8,
