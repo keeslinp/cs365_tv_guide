@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { ShowGrid } from '../../components';
 
-export const MyShows = ({ shows, episodes, seenEpisodes, savedShows, history }) => {
+export const MyShows = ({ shows, episodes, seenEpisodes, savedShows, history, deleteShow }) => {
   return (
     <div>
       <Typography variant="h3">
@@ -15,6 +15,7 @@ export const MyShows = ({ shows, episodes, seenEpisodes, savedShows, history }) 
           seenEpisodes={seenEpisodes}
           savedShows={savedShows}
           history={history}
+          deleteShow={deleteShow}
         />
         : <CircularProgress />}
     </div>

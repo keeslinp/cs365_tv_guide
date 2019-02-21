@@ -11,8 +11,9 @@ const truncate = str => `${str.substring(0, MAX_LEN)}${str.length > MAX_LEN ? '.
 
 export const ShowGrid = ({ shows, savedShows, seenEpisodes, history }) => (
   <Grid container spacing={16}>
-    {shows.map(({ name, overview, poster_path, id, number_of_episodes }) =>
-      <Grid item xs={2} key={id}>
+    {shows.map(({ name, overview, poster_path, id, number_of_episodes }) => {
+      const isSaved = savedShows.includes(id);
+      return <Grid item xs={2} key={id}>
         <Card>
           <CardActionArea
             onClick={() => {
@@ -28,7 +29,7 @@ export const ShowGrid = ({ shows, savedShows, seenEpisodes, history }) => (
               <Typography variant="h5">
                 {name}
               </Typography>
-              {savedShows.includes(id) && number_of_episodes &&
+              {isSaved && number_of_episodes &&
                 <Typography color="secondary" variant="h5" inline>
                   ({(number_of_episodes - seenEpisodes.filter(({ showId }) => showId === id).length)} New)
                     </Typography>
@@ -39,7 +40,7 @@ export const ShowGrid = ({ shows, savedShows, seenEpisodes, history }) => (
             </CardContent>
           </CardActionArea>
         </Card>
-      </Grid>
-    )}
+      </Grid>;
+    })}
   </Grid>
 );

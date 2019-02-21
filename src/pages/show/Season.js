@@ -17,6 +17,11 @@ align-items: center;
 width: 100%;
 `;
 
+const StyledExpansionPanel = styled(ExpansionPanel)`
+  margin-left: 100px;
+  margin-right: 100px;
+`;
+
 export const Season = ({ season: { id, name, season_number }, showId, seenEpisodes, markEpisodeAsSeen }) => {
   const [{ season }, fetchData] = useReducer(externalData, {});
   useEffect(() => {
@@ -35,7 +40,7 @@ export const Season = ({ season: { id, name, season_number }, showId, seenEpisod
 
   const preventPropagation = evt => evt.stopPropagation();
   return (
-    <ExpansionPanel key={id}>
+    <StyledExpansionPanel key={id}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <PanelTitle>
           <Typography inline>{name}</Typography>
@@ -48,6 +53,6 @@ export const Season = ({ season: { id, name, season_number }, showId, seenEpisod
       <ExpansionPanelDetails>
         {Boolean(season) ? <EpisodeTable episodes={season.episodes} seenEpisodes={seenEpisodes} markEpisodeAsSeen={markEpisodeAsSeen} /> : <CircularProgress />}
       </ExpansionPanelDetails>
-    </ExpansionPanel>
+    </StyledExpansionPanel>
   );
 };

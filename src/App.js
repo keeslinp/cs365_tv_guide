@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { AppBar } from './components';
 import { MyShows, PopularShows, SearchResults, Show } from './pages';
 import './App.css';
-import { internalData, externalData, fetchPopularShows, markEpisodeAsSeen, saveShow, searchShows, fetchMyShows } from './reducers';
+import { internalData, externalData, fetchPopularShows, markEpisodeAsSeen, saveShow, searchShows, fetchMyShows, removeShow } from './reducers';
 
 
 const Container = styled.div`
@@ -40,6 +40,9 @@ const App = () => {
   const handleMarkAsSeen = (showId, id, _evt, value) => {
     updateState(markEpisodeAsSeen(showId, id, value));
   };
+  const handleDeleteShow = (id) => {
+    updateState(removeShow(id));
+  }
   return (
     <Router>
       <div>
@@ -51,6 +54,7 @@ const App = () => {
               savedShows={savedShows}
               seenEpisodes={seenEpisodes}
               history={history}
+              deleteShow={handleDeleteShow}
             />} />
           <Route exact path="/popular" render={({ history }) =>
             <PopularShows
@@ -76,6 +80,7 @@ const App = () => {
               showId={parseInt(showId, 10)}
               saveShow={handleSaveShow}
               markEpisodeAsSeen={handleMarkAsSeen}
+              deleteShow={handleDeleteShow}
             />} />
         </Container>
       </div>

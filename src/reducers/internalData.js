@@ -1,6 +1,7 @@
 const ACTIONS = Object.freeze({
   ADD_SHOW: 'ADD_SHOW',
   SEEN_EPISODE: 'SEEN_EPISODE',
+  REMOVE_SHOW: 'REMOVE_SHOW',
 });
 
 export const markEpisodeAsSeen = (showId, id, seen) => ({
@@ -13,7 +14,12 @@ export const markEpisodeAsSeen = (showId, id, seen) => ({
 export const saveShow = showId => ({
   type: ACTIONS.ADD_SHOW,
   showId,
-})
+});
+
+export const removeShow = showId => ({
+  type: ACTIONS.REMOVE_SHOW,
+  showId,
+});
 
 export const internalData = (state, action) => {
   console.log('internal action', action);
@@ -48,7 +54,14 @@ export const internalData = (state, action) => {
       }
       return state;
     }
+    case ACTIONS.REMOVE_SHOW: {
+      const { savedShows = [], ...rest } = state;
+      return {
+        ...rest,
+        savedShows: savedShows.filter(show => show !== action.showId),
+      };
+    }
     default:
       return state;
   }
-}
+};
