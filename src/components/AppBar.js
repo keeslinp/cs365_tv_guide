@@ -24,19 +24,21 @@ const StyledToolbar = withStyles({
 })(Toolbar);
 
 const TABS = [
-  { to: '/', label: 'My Shows' },
-  { to: '/popular', label: 'Popular' },
+  { value: '/', label: 'My Shows' },
+  { value: '/popular', label: 'Popular' },
 ];
 
 const AppBar = ({ search, history, location }) => (
   <div>
     <MuiAppBar position="static" color="default">
       <StyledToolbar>
-        <Tabs onChange={(_evt, val) => {
-          console.log(val);
-          history.push(TABS[val].to);
-        }} value={TABS.findIndex(({ to }) => to === location.pathname)}>
-          {TABS.map(({ label }) => <Tab label={label} />)}
+        <Tabs
+          onChange={(_evt, val) => {
+            history.push(val);
+          }}
+          value={location.pathname}
+        >
+          {TABS.map((values) => <Tab {...values} />)}
         </Tabs>
         <SearchBar search={search} />
       </StyledToolbar>

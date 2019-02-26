@@ -7,16 +7,18 @@ export const SearchResults = ({ episodes, seenEpisodes, savedShows, searchResult
   return (
     <div>
       <Typography variant="h3">
-        My Shows
-    </Typography>
-    {searchResults ?
+        Search
+      </Typography>
+      {searchResults ?
         <ShowGrid
           shows={searchResults}
           seenEpisodes={seenEpisodes}
           savedShows={savedShows}
           history={history}
         />
-        : <CircularProgress />}
+          : <Typography variant="h6">
+            Use the search bar to find a TV show.
+          </Typography>}
     </div>
   );
 };

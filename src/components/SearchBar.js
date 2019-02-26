@@ -5,6 +5,7 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
+import styled from 'styled-components';
 import { get } from 'lodash';
 import { withRouter } from 'react-router'
 
@@ -22,6 +23,16 @@ const styles = {
     padding: 10,
   },
 };
+
+const StyledInput = styled(InputBase)`
+  input {
+    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    width: 200px;
+    :focus {
+      width: 400px;
+    }
+  }
+`;
 
 const SearchBar = ({ classes, history, search }) => {
   const [ searchValue, setSearch ] = useState('');
@@ -47,7 +58,16 @@ const SearchBar = ({ classes, history, search }) => {
   };
   return (
     <Paper className={classes.root} elevation={1}>
-      <InputBase className={classes.input} placeholder="Search Shows" onChange={handleSearchChange} value={searchValue}/>
+      <StyledInput
+        className={classes.input}
+        placeholder="Search Shows"
+        onChange={handleSearchChange}
+        value={searchValue}
+        onFocus={triggerSearch.bind(null, '')}
+        inputProps={{
+          id: 'search_bar',
+        }}
+      />
       <IconButton className={classes.iconButton} aria-label="Search">
         {isSearching ?
           <ClearIcon onClick={clearSearch} />
