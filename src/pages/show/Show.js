@@ -23,6 +23,7 @@ const ShowImage = styled.img`
 
 const Information = styled.div`
   padding-left: 50px;
+  padding-right: 100px;
   max-width: 50%;
 `;
 

@@ -5,9 +5,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import Badge from '@material-ui/core/Badge';
+import styled from 'styled-components';
 
 const MAX_LEN = 100;
 const truncate = str => `${str.substring(0, MAX_LEN)}${str.length > MAX_LEN ? '...' : ''}`;
+
+const StyledBadge = styled(Badge)`
+  padding-right: 15px;
+`;
 
 export const ShowGrid = ({ shows, savedShows, seenEpisodes, history }) => (
   <Grid container spacing={16}>
@@ -26,14 +32,14 @@ export const ShowGrid = ({ shows, savedShows, seenEpisodes, history }) => (
               title={name}
             />
             <CardContent>
-              <Typography variant="h5">
-                {name}
-              </Typography>
-              {isSaved && number_of_episodes &&
-                <Typography color="secondary" variant="h5" inline>
-                  ({(number_of_episodes - seenEpisodes.filter(({ showId }) => showId === id).length)} New)
-                    </Typography>
-              }
+              <StyledBadge
+                badgeContent={isSaved && number_of_episodes && number_of_episodes - seenEpisodes.filter(({ showId }) => showId === id).length}
+                color="primary"
+              >
+                <Typography variant="h5">
+                  {name}
+                </Typography>
+              </StyledBadge>
               <Typography component="p">
                 {truncate(overview)}
               </Typography>
