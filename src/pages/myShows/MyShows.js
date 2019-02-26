@@ -5,6 +5,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
 import Portal from '@material-ui/core/Portal';
+import Tooltip from '@material-ui/core/Tooltip';
 import { ShowGrid } from '../../components';
 
 const AddButton = styled(Fab)`
@@ -17,7 +18,7 @@ const startSearch = () => {
   document.getElementById('search_bar').focus();
 };
 
-export const MyShows = ({ shows, episodes, seenEpisodes, savedShows, history, deleteShow }) => {
+export const MyShows = ({ shows, seenEpisodes, savedShows, history, deleteShow }) => {
   return (
     <div>
       <Typography variant="h3" gutterBottom>
@@ -33,9 +34,11 @@ export const MyShows = ({ shows, episodes, seenEpisodes, savedShows, history, de
         />
         : <CircularProgress />}
       <Portal>
-        <AddButton color="primary" aria-label="Add" onClick={startSearch}>
-          <AddIcon />
-        </AddButton>
+        <Tooltip title="Search For a Show">
+          <AddButton color="primary" aria-label="Add" onClick={startSearch}>
+            <AddIcon />
+          </AddButton>
+        </Tooltip>
       </Portal>
     </div>
   );

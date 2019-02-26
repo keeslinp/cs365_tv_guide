@@ -19,6 +19,9 @@ export const ShowGrid = ({ shows, savedShows, seenEpisodes, history }) => (
   <Grid container spacing={16}>
     {shows.map(({ name, overview, poster_path, id, number_of_episodes }) => {
       const isSaved = savedShows.includes(id);
+      const episodeCount = (isSaved && number_of_episodes) ?
+        number_of_episodes - seenEpisodes.filter(({ showId }) => showId === id).length
+        : 0;
       return <Grid item xs={2} key={id}>
         <Card>
           <CardActionArea
@@ -33,7 +36,7 @@ export const ShowGrid = ({ shows, savedShows, seenEpisodes, history }) => (
             />
             <CardContent>
               <StyledBadge
-                badgeContent={isSaved && number_of_episodes && number_of_episodes - seenEpisodes.filter(({ showId }) => showId === id).length}
+                badgeContent={episodeCount}
                 color="primary"
               >
                 <Typography variant="h5">

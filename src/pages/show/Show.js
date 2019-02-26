@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import styled from 'styled-components';
 import { get } from 'lodash';
+import Tooltip from '@material-ui/core/Tooltip';
 import { externalData, fetchShow } from '../../reducers';
 import { Episodes } from './Episodes';
 
@@ -27,6 +28,12 @@ const Information = styled.div`
   max-width: 50%;
 `;
 
+const StyledDoneIcon = styled(DoneIcon)`
+  margin-right: 10px;
+  position: relative;
+  top: 5px;
+`;
+
 export const Show = ({ showId, savedShows, seenEpisodes, saveShow, markEpisodeAsSeen, deleteShow }) => {
   const [{ show }, fetchData] = useReducer(externalData, {});
   useEffect(() => {
@@ -42,6 +49,7 @@ export const Show = ({ showId, savedShows, seenEpisodes, saveShow, markEpisodeAs
   const handleDeleteClick = () => {
     deleteShow(showId);
   };
+  const nextEpisode = get(show, 'next_episode_to_air.air_date', null);
   return (
     <div>
       <Typography variant="h3">
@@ -53,26 +61,29 @@ export const Show = ({ showId, savedShows, seenEpisodes, saveShow, markEpisodeAs
           <Typography variant="h6" paragraph>
             {show.overview}
           </Typography>
-          <Typography variant="h6">
-            Next Episode: {get(show, 'next_episode_to_air.air_date', 'N/A')}
-          </Typography>
+          {nextEpisode &&
+            <Typography variant="h6">
+              Next Episode: {nextEpisode}
+            </Typography>
+          }
           {savedShows.includes(showId) ?
-              <div>
-                <Typography inline color="textSecondary"><DoneIcon /> Show Saved</Typography>
+            <div>
+              <StyledDoneIcon />
+              <Typography inline color="textSecondary"> Show Saved</Typography>
+              <Tooltip title="Remove Show">
                 <IconButton onClick={handleDeleteClick}>
                   <DeleteIcon />
                 </IconButton>
-              </div>
-              :
+              </Tooltip>
+            </div>
+            :
             <Button variant="contained" color="primary" onClick={handleSaveShowButtonClicked}>
               Add To My Shows
           </Button>
           }
         </Information>
       </ShowBody>
-      <div>
-        <Episodes seasons={show.seasons} seenEpisodes={seenEpisodes} showId={showId} markEpisodeAsSeen={markEpisodeAsSeen.bind(null, showId)} />
-      </div>
+      <Episodes seasons={show.seasons} seenEpisodes={seenEpisodes} showId={showId} markEpisodeAsSeen={markEpisodeAsSeen.bind(null, showId)} />
     </div>
   );
 };
