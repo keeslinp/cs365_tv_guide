@@ -31,6 +31,7 @@ const StyledInput = styled(InputBase)`
     :focus {
       width: 400px;
     }
+    padding: 12px 0px 7px;
   }
 `;
 
