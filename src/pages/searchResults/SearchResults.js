@@ -6,7 +6,7 @@ import { ShowGrid } from '../../components';
 export const SearchResults = ({ episodes, seenEpisodes, savedShows, searchResults, history }) => {
   return (
     <div>
-      <Typography variant="h3">
+      <Typography variant="h3" gutterBottom>
         Search
       </Typography>
       {searchResults ?

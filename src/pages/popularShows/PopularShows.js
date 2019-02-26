@@ -6,7 +6,7 @@ import { ShowGrid } from '../../components';
 export const PopularShows = ({ shows, episodes, seenEpisodes, savedShows, history }) => {
   return (
     <div>
-      <Typography variant="h3">
+      <Typography variant="h3" gutterBottom>
         Popular Shows
     </Typography>
     {shows ?

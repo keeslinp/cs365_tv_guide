@@ -41,7 +41,7 @@ export const Season = ({ season: { id, name, season_number }, showId, seenEpisod
 
   const markAllAsSeen = (_evt, value) => {
     if (Boolean(season)) {
-      for (const episode of unseenEpisodes) {
+      for (const episode of season.episodes) {
         markEpisodeAsSeen(episode.id, null, value);
       }
     }

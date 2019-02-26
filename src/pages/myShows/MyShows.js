@@ -20,7 +20,7 @@ const startSearch = () => {
 export const MyShows = ({ shows, episodes, seenEpisodes, savedShows, history, deleteShow }) => {
   return (
     <div>
-      <Typography variant="h3">
+      <Typography variant="h3" gutterBottom>
         My Shows
     </Typography>
       {shows ?
